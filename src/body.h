@@ -37,6 +37,7 @@ class Body {
  public:
   Vector position_;
   Vector velocity_;
+  Vector force_;
   double mass_;
   double radius_;
 
@@ -55,6 +56,13 @@ class Body {
     given time step.
    */
   void UpdatePosition(double time_step);
+
+  // set the force to 0 for the next iteration
+  void ResetForce();
+
+  // compute the net force acting between the body a and b, and
+  // add to the net force acting on a
+  void AddForce(Body b, double time_step);
 };
 
 #endif /* body_h */

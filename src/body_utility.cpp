@@ -32,3 +32,7 @@ Body BodyUtility::Collision(Body a, Body b) {
 bool BodyUtility::SamePosition(Body a, Body b) {
   return a.radius_ + b.radius_ > Distance(a, b);
 }
+
+bool BodyUtility::inQuad(Body* body, Quad* quad) {
+    return quad->contains(body->position_);
+}

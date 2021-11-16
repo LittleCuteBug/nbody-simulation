@@ -3,6 +3,7 @@
 
 #include "body.h"
 #include "ofMain.h"
+#include "Quad.h"
 
 #include <math.h>
 #include <stdio.h>
@@ -64,6 +65,10 @@ class BodyUtility {
     the two bodies.
   */
   static bool SamePosition(Body a, Body b);
+
+
+  static bool inQuad(Body* body, Quad* quad);
+
 };
 
 #endif /* body_utility_hpp */

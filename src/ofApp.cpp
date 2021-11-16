@@ -40,22 +40,17 @@ void ofApp::setup() {
 }
 
 void ofApp::update() {
+  BHTree* bhtree = new BHTree(q);
   for (int i = 0; i < bodies.size(); ++i) {
-    for (int j = 0; j < bodies.size(); ++j) {
-      if (i != j) {
-        if (BodyUtility::SamePosition(bodies[i], bodies[j])) {
-          bodies[i] = BodyUtility::Collision(bodies[i], bodies[j]);
-          bodies.erase(bodies.begin() + j);
-        } else {
-          Vector velocity = BodyUtility::VelocityInteraction(
-              bodies[i], bodies[j], time_step_);
-          bodies[i].velocity_.x -= velocity.x;
-          bodies[i].velocity_.y -= velocity.y;
-          bodies[i].velocity_.z -= velocity.z;
-        }
-      }
-    }
+      if (q->contains(bodies[i].position_))
+          bhtree->insert(&bodies[i], time_step_);
   }
+
+  for (int i = 0; i < bodies.size(); ++i) {
+      bodies[i].ResetForce();
+      bhtree->updateForce(&bodies[i], time_step_);
+  }
+
   for (int i = 0; i < bodies.size(); ++i) {
     bodies[i].UpdatePosition(time_step_);
   }
