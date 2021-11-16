@@ -46,6 +46,7 @@ class Body {
     velocity_ = v;
     mass_ = m;
     radius_ = r;
+    force_ = Vector(0, 0, 0);
   }
 
   /* Will draw the body in the OpenFrameworks application. */
