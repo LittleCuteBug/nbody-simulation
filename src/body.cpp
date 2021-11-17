@@ -33,3 +33,7 @@ void Body::AddForce(Body b) {
 	this->force_.y += F * (b.position_.y - this->position_.y) / dist;
 	this->force_.z += F * (b.position_.z - this->position_.z) / dist;
 }
+
+Body* Body::copy() {
+	return new Body(this->position_, this->velocity_, this->mass_, this->radius_);
+}

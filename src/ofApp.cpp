@@ -44,7 +44,7 @@ void ofApp::update() {
   BHTree* bhtree = new BHTree(q);
   for (int i = 0; i < bodies.size(); ++i) {
       if (q->contains(bodies[i].position_))
-          bhtree->insert(&bodies[i]);
+          bhtree->insert(bodies[i].copy());
   }
 
   for (int i = 0; i < bodies.size(); ++i) {
@@ -53,6 +53,7 @@ void ofApp::update() {
           bhtree->updateForce(&bodies[i]);
   }
 
+  bhtree->clearTree();
   for (int i = 0; i < bodies.size(); ++i) {
     bodies[i].UpdatePosition(time_step_);
   }

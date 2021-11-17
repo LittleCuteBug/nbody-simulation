@@ -259,8 +259,9 @@ void BHTree::clearTree() {
 	if (this->x1y1z0 != nullptr) this->x1y1z0->clearTree();
 	if (this->x1y1z1 != nullptr) this->x1y1z1->clearTree();
 
-	
-	delete this->body;
-	delete this->quad;
+	if(this->body != nullptr)
+		delete this->body;
+	if (this->quad != nullptr)
+		delete this->quad;
 	delete this;
 }

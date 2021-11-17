@@ -64,6 +64,8 @@ class Body {
   // compute the net force acting between the body a and b, and
   // add to the net force acting on a
   void AddForce(Body b);
+
+  Body* copy();
 };
 
 #endif /* body_h */
