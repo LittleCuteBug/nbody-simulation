@@ -18,7 +18,6 @@ class ofApp : public ofBaseApp {
   std::vector<Body> bodies;
   double time_step_ = kTimeScale * kSecondsInYear;
   double time_passed_;
-  Quad* q = new Quad(0, 0, 0, 2 * 1e8);
   /* Camera utilities */
   ofEasyCam camera_;
   ofFbo fbo_;

@@ -21,8 +21,8 @@ bool Quad::contains(Vector position_) {
 	return true;
 }
 
-Quad Quad::X0Y0Z0() {
-	return Quad(
+Quad* Quad::X0Y0Z0() {
+	return new Quad(
 		this->xmid - this->length / 4.0,
 		this->ymid - this->length / 4.0,
 		this->zmid - this->length / 4.0,
@@ -30,8 +30,8 @@ Quad Quad::X0Y0Z0() {
 	);
 }
 
-Quad Quad::X0Y0Z1() {
-	return Quad(
+Quad* Quad::X0Y0Z1() {
+	return new Quad(
 		this->xmid - this->length / 4.0,
 		this->ymid - this->length / 4.0,
 		this->zmid + this->length / 4.0,
@@ -39,8 +39,8 @@ Quad Quad::X0Y0Z1() {
 	);
 }
 
-Quad Quad::X0Y1Z0() {
-	return Quad(
+Quad* Quad::X0Y1Z0() {
+	return new Quad(
 		this->xmid - this->length / 4.0,
 		this->ymid + this->length / 4.0,
 		this->zmid - this->length / 4.0,
@@ -48,8 +48,8 @@ Quad Quad::X0Y1Z0() {
 	);
 }
 
-Quad Quad::X0Y1Z1() {
-	return Quad(
+Quad* Quad::X0Y1Z1() {
+	return new Quad(
 		this->xmid - this->length / 4.0,
 		this->ymid + this->length / 4.0,
 		this->zmid + this->length / 4.0,
@@ -57,8 +57,8 @@ Quad Quad::X0Y1Z1() {
 	);
 }
 
-Quad Quad::X1Y0Z0() {
-	return Quad(
+Quad* Quad::X1Y0Z0() {
+	return new Quad(
 		this->xmid + this->length / 4.0,
 		this->ymid - this->length / 4.0,
 		this->zmid - this->length / 4.0,
@@ -66,8 +66,8 @@ Quad Quad::X1Y0Z0() {
 	);
 }
 
-Quad Quad::X1Y0Z1() {
-	return Quad(
+Quad* Quad::X1Y0Z1() {
+	return new Quad(
 		this->xmid + this->length / 4.0,
 		this->ymid - this->length / 4.0,
 		this->zmid + this->length / 4.0,
@@ -75,8 +75,8 @@ Quad Quad::X1Y0Z1() {
 	);
 }
 
-Quad Quad::X1Y1Z0() {
-	return Quad(
+Quad* Quad::X1Y1Z0() {
+	return new Quad(
 		this->xmid + this->length / 4.0,
 		this->ymid + this->length / 4.0,
 		this->zmid - this->length / 4.0,
@@ -84,8 +84,8 @@ Quad Quad::X1Y1Z0() {
 	);
 }
 
-Quad Quad::X1Y1Z1() {
-	return Quad(
+Quad* Quad::X1Y1Z1() {
+	return new Quad(
 		this->xmid + this->length / 4.0,
 		this->ymid + this->length / 4.0,
 		this->zmid + this->length / 4.0,

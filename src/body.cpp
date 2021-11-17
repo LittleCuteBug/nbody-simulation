@@ -8,9 +8,9 @@ void Body::Draw() const {
 }
 
 void Body::UpdatePosition(double time_step) {
-	velocity_.x += time_step * force_.x / mass_;
-	velocity_.y += time_step * force_.y / mass_;
-	velocity_.z += time_step * force_.z / mass_;
+	velocity_.x += force_.x / mass_;
+	velocity_.y += force_.y / mass_;
+	velocity_.z += force_.z / mass_;
 
 	position_.x += (velocity_.x * time_step);
 	position_.y += (velocity_.y * time_step);
@@ -26,7 +26,7 @@ void Body::ResetForce() {
 void Body::AddForce(Body b) {
 	double dist = BodyUtility::Distance(*this, b);
 	double EPS = 3E4;
-	double g = (b.mass_ * kG / (dist * dist * dist));
+	double g = (b.mass_ * kG / (dist * dist * dist + EPS * EPS * EPS));
 	double F = (g * this->mass_ * b.mass_) / (dist * dist * dist + EPS * EPS * EPS);
 
 	this->force_.x += F * (b.position_.x - this->position_.x) / dist;

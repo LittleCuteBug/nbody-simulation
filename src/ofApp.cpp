@@ -40,6 +40,7 @@ void ofApp::setup() {
 }
 
 void ofApp::update() {
+  Quad* q = new Quad(0, 0, 0, 2 * 1e4);
   BHTree* bhtree = new BHTree(q);
   for (int i = 0; i < bodies.size(); ++i) {
       if (q->contains(bodies[i].position_))
@@ -49,7 +50,7 @@ void ofApp::update() {
   for (int i = 0; i < bodies.size(); ++i) {
       bodies[i].ResetForce();
       if (q->contains(bodies[i].position_))
-        bhtree->updateForce(&bodies[i]);
+          bhtree->updateForce(&bodies[i]);
   }
 
   for (int i = 0; i < bodies.size(); ++i) {

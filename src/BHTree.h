@@ -34,5 +34,7 @@ public:
 	//far away that the external nodes would not matter much.
 	void updateForce(Body* b);
 
+	//Start at the main node of the tree. Then, recursively go each branch
+	void clearTree();
 };
 

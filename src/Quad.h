@@ -18,27 +18,27 @@ public:
 
 	//Create subdivisions of the current quadrant
 	// Subdivision: X0Y0Z0 quadrant
-	Quad X0Y0Z0();
+	Quad* X0Y0Z0();
 
 	// Subdivision: X0Y0Z1 quadrant
-	Quad X0Y0Z1();
+	Quad* X0Y0Z1();
 
 	// Subdivision: X0Y1Z0 quadrant
-	Quad X0Y1Z0();
+	Quad* X0Y1Z0();
 
 	// Subdivision: X0Y1Z1 quadrant
-	Quad X0Y1Z1();
+	Quad* X0Y1Z1();
 
 	// Subdivision: X1Y0Z0 quadrant
-	Quad X1Y0Z0();
+	Quad* X1Y0Z0();
 
 	// Subdivision: X1Y0Z1 quadrant
-	Quad X1Y0Z1();
+	Quad* X1Y0Z1();
 
 	// Subdivision: X1Y1Z0 quadrant
-	Quad X1Y1Z0();
+	Quad* X1Y1Z0();
 
 	// Subdivision: X1Y1Z1 quadrant
-	Quad X1Y1Z1();
+	Quad* X1Y1Z1();
 };
 
