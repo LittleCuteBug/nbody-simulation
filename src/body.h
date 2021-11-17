@@ -63,7 +63,7 @@ class Body {
 
   // compute the net force acting between the body a and b, and
   // add to the net force acting on a
-  void AddForce(Body b, double time_step);
+  void AddForce(Body b);
 };
 
 #endif /* body_h */

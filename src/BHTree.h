@@ -27,12 +27,12 @@ public:
 	bool isExternal();
 
 	//We have to populate the tree with bodies. We start at the current tree and recursively travel through the branches
-	void insert(Body* b, double time_step);
+	void insert(Body* b);
 
 	//Start at the main node of the tree. Then, recursively go each branch
 	//Until either we reach an external node or we reach a node that is sufficiently
 	//far away that the external nodes would not matter much.
-	void updateForce(Body* b, double time_step);
+	void updateForce(Body* b);
 
 };
 

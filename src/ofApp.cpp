@@ -43,12 +43,13 @@ void ofApp::update() {
   BHTree* bhtree = new BHTree(q);
   for (int i = 0; i < bodies.size(); ++i) {
       if (q->contains(bodies[i].position_))
-          bhtree->insert(&bodies[i], time_step_);
+          bhtree->insert(&bodies[i]);
   }
 
   for (int i = 0; i < bodies.size(); ++i) {
       bodies[i].ResetForce();
-      bhtree->updateForce(&bodies[i], time_step_);
+      if (q->contains(bodies[i].position_))
+        bhtree->updateForce(&bodies[i]);
   }
 
   for (int i = 0; i < bodies.size(); ++i) {

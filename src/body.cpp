@@ -23,10 +23,10 @@ void Body::ResetForce() {
 	force_.z = 0;
 }
 
-void Body::AddForce(Body b, double time_step) {
+void Body::AddForce(Body b) {
 	double dist = BodyUtility::Distance(*this, b);
 	double EPS = 3E4;
-	double g = (b.mass_ * kG / (dist * dist * dist)) * time_step;
+	double g = (b.mass_ * kG / (dist * dist * dist));
 	double F = (g * this->mass_ * b.mass_) / (dist * dist * dist + EPS * EPS * EPS);
 
 	this->force_.x += F * (b.position_.x - this->position_.x) / dist;
