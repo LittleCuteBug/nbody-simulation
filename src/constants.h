@@ -5,7 +5,7 @@
 const double kG = 6.67E-11;
 
 /* Number of bodies to be run in the simulation */
-const int kBodyCount = 500;
+const int kBodyCount = 100;
 
 /* Mass constants - scaled for OpenFrameworks */
 const double kMassScale = 1E-15;

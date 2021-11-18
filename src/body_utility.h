@@ -19,7 +19,7 @@ class BodyUtility {
     Will return the magnitude of the distance between the two given bodies (a)
     and (b) in the 3D space.
    */
-  static double Distance(Body a, Body b);
+  static double Distance(Body* a, Body* b);
 
   static bool inQuad(Body* body, Quad* quad);
 

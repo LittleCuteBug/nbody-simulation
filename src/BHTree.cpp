@@ -37,12 +37,15 @@ void BHTree::insert(Body* b) {
 	//tree it should be located in. Then recursively update the nodes below it.
 	if(!this->isExternal())
 	{
-		this->body->AddForce(*b);
+		this->body->AddForce(b);
 
 		Quad* x0y0z0 = this->quad->X0Y0Z0();
 		if (BodyUtility::inQuad(b, x0y0z0)) {
 			if (this->x0y0z0 == nullptr) {
 				this->x0y0z0 = new BHTree(x0y0z0);
+			}
+			else {
+				delete x0y0z0;
 			}
 			this->x0y0z0->insert(b);
 			return;
@@ -53,6 +56,9 @@ void BHTree::insert(Body* b) {
 			if (this->x0y0z1 == nullptr) {
 				this->x0y0z1 = new BHTree(x0y0z1);
 			}
+			else {
+				delete x0y0z1;
+			}
 			this->x0y0z1->insert(b);
 			return;
 		}
@@ -61,6 +67,9 @@ void BHTree::insert(Body* b) {
 		if (BodyUtility::inQuad(b, x0y1z0)) {
 			if (this->x0y1z0 == nullptr) {
 				this->x0y1z0 = new BHTree(x0y1z0);
+			}
+			else {
+				delete x0y1z0;
 			}
 			this->x0y1z0->insert(b);
 			return;
@@ -71,6 +80,9 @@ void BHTree::insert(Body* b) {
 			if (this->x0y1z1 == nullptr) {
 				this->x0y1z1 = new BHTree(x0y1z1);
 			}
+			else {
+				delete x0y1z1;
+			}
 			this->x0y1z1->insert(b);
 			return;
 		}
@@ -79,6 +91,9 @@ void BHTree::insert(Body* b) {
 		if (BodyUtility::inQuad(b, x1y0z0)) {
 			if (this->x1y0z0 == nullptr) {
 				this->x1y0z0 = new BHTree(x1y0z0);
+			}
+			else {
+				delete x1y0z0;
 			}
 			this->x1y0z0->insert(b);
 			return;
@@ -89,6 +104,9 @@ void BHTree::insert(Body* b) {
 			if (this->x1y0z1 == nullptr) {
 				this->x1y0z1 = new BHTree(x1y0z1);
 			}
+			else {
+				delete x1y0z1;
+			}
 			this->x1y0z1->insert(b);
 			return;
 		}
@@ -98,6 +116,9 @@ void BHTree::insert(Body* b) {
 			if (this->x1y1z0 == nullptr) {
 				this->x1y1z0 = new BHTree(x1y1z0);
 			}
+			else {
+				delete x1y1z0;
+			}
 			this->x1y1z0->insert(b);
 			return;
 		}
@@ -106,6 +127,9 @@ void BHTree::insert(Body* b) {
 		if (BodyUtility::inQuad(b, x1y1z1)) {
 			if (this->x1y1z1 == nullptr) {
 				this->x1y1z1 = new BHTree(x1y1z1);
+			}
+			else {
+				delete x1y1z1;
 			}
 			this->x1y1z1->insert(b);
 			return;
@@ -229,11 +253,11 @@ void BHTree::insert(Body* b) {
 void BHTree::updateForce(Body* b) {
 	if (this->isExternal()) {
 		if (this->body != b) {
-			b->AddForce(*this->body);
+			b->AddForce(this->body);
 		}
 	}
-	else if (this->quad->getLength() / BodyUtility::Distance(*this->body, *b) < 2) {
-		b->AddForce(*this->body);
+	else if (this->quad->getLength() / BodyUtility::Distance(this->body, b) < 2) {
+		b->AddForce(this->body);
 	}
 	else {
 		if (this->x0y0z0 != nullptr) this->x0y0z0->updateForce(b);
@@ -259,8 +283,8 @@ void BHTree::clearTree() {
 	if (this->x1y1z0 != nullptr) this->x1y1z0->clearTree();
 	if (this->x1y1z1 != nullptr) this->x1y1z1->clearTree();
 
-	if(this->body != nullptr)
-		delete this->body;
+	//if(this->body != nullptr)
+		//delete this->body;
 	if (this->quad != nullptr)
 		delete this->quad;
 	delete this;
