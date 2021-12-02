@@ -1,9 +1,8 @@
 #pragma once
 
-#include "body_utility.h"
 #include "ofMain.h"
 #include "ofxBloom.h"
-
+#include "bvhNode.h"
 #include <vector>
 
 /*

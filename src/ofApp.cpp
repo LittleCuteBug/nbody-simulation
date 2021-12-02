@@ -40,26 +40,17 @@ void ofApp::setup() {
 }
 
 void ofApp::update() {
-  for (int i = 0; i < bodies.size(); ++i) {
-    for (int j = 0; j < bodies.size(); ++j) {
-      if (i != j) {
-        if (BodyUtility::SamePosition(bodies[i], bodies[j])) {
-          bodies[i] = BodyUtility::Collision(bodies[i], bodies[j]);
-          bodies.erase(bodies.begin() + j);
-        } else {
-          Vector velocity = BodyUtility::VelocityInteraction(
-              bodies[i], bodies[j], time_step_);
-          bodies[i].velocity_.x -= velocity.x;
-          bodies[i].velocity_.y -= velocity.y;
-          bodies[i].velocity_.z -= velocity.z;
-        }
-      }
+    for (int i = 0; i < bodies.size(); ++i) {
+        bodies[i].resetForce();
     }
-  }
-  for (int i = 0; i < bodies.size(); ++i) {
-    bodies[i].UpdatePosition(time_step_);
-  }
-  time_passed_ += time_step_;
+    bvhNode root = bvhNode(bodies.begin(), bodies.end());
+    for (int i = 0; i < bodies.size(); ++i) {
+        root.updateForce(&bodies[i]);
+    }
+    for (int i = 0; i < bodies.size(); ++i) {
+        bodies[i].UpdatePosition(time_step_);
+    }
+    time_passed_ += time_step_;
 }
 
 void ofApp::draw() {
