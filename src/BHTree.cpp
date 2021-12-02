@@ -1,7 +1,7 @@
 #include "BHTree.h"
-#include "body_utility.h"
 
-BHTree::BHTree(Quad* q) {
+BHTree::BHTree(Quad q) {
+	level = 0;
 	this->quad = q;
 	this->body = nullptr;
 	this->x0y0z0 = nullptr;
@@ -37,99 +37,83 @@ void BHTree::insert(Body* b) {
 	//tree it should be located in. Then recursively update the nodes below it.
 	if(!this->isExternal())
 	{
-		this->body->AddForce(b);
+		this->body->Add(b);
 
-		Quad* x0y0z0 = this->quad->X0Y0Z0();
-		if (BodyUtility::inQuad(b, x0y0z0)) {
+		Quad x0y0z0 = quad.X0Y0Z0();
+		if (x0y0z0.contains(b->position_)) {
 			if (this->x0y0z0 == nullptr) {
 				this->x0y0z0 = new BHTree(x0y0z0);
-			}
-			else {
-				delete x0y0z0;
+				this->x0y0z0->level = level + 1;
 			}
 			this->x0y0z0->insert(b);
 			return;
 		}
 
-		Quad* x0y0z1 = this->quad->X0Y0Z1();
-		if (BodyUtility::inQuad(b, x0y0z1)) {
+		Quad x0y0z1 = quad.X0Y0Z1();
+		if (x0y0z1.contains(b->position_)) {
 			if (this->x0y0z1 == nullptr) {
 				this->x0y0z1 = new BHTree(x0y0z1);
-			}
-			else {
-				delete x0y0z1;
+				this->x0y0z1->level = level + 1;
 			}
 			this->x0y0z1->insert(b);
 			return;
 		}
 
-		Quad* x0y1z0 = this->quad->X0Y1Z0();
-		if (BodyUtility::inQuad(b, x0y1z0)) {
+		Quad x0y1z0 = quad.X0Y1Z0();
+		if (x0y1z0.contains(b->position_)) {
 			if (this->x0y1z0 == nullptr) {
 				this->x0y1z0 = new BHTree(x0y1z0);
-			}
-			else {
-				delete x0y1z0;
+				this->x0y1z0->level = level + 1;
 			}
 			this->x0y1z0->insert(b);
 			return;
 		}
 
-		Quad* x0y1z1 = this->quad->X0Y1Z1();
-		if (BodyUtility::inQuad(b, x0y1z1)) {
+		Quad x0y1z1 = quad.X0Y1Z1();
+		if (x0y1z1.contains(b->position_)) {
 			if (this->x0y1z1 == nullptr) {
 				this->x0y1z1 = new BHTree(x0y1z1);
-			}
-			else {
-				delete x0y1z1;
+				this->x0y1z1->level = level + 1;
 			}
 			this->x0y1z1->insert(b);
 			return;
 		}
 
-		Quad* x1y0z0 = this->quad->X1Y0Z0();
-		if (BodyUtility::inQuad(b, x1y0z0)) {
+		Quad x1y0z0 = quad.X1Y0Z0();
+		if (x1y0z0.contains(b->position_)) {
 			if (this->x1y0z0 == nullptr) {
 				this->x1y0z0 = new BHTree(x1y0z0);
-			}
-			else {
-				delete x1y0z0;
+				this->x1y0z0->level = level + 1;
 			}
 			this->x1y0z0->insert(b);
 			return;
 		}
 
-		Quad* x1y0z1 = this->quad->X1Y0Z1();
-		if (BodyUtility::inQuad(b, x1y0z1)) {
+		Quad x1y0z1 = quad.X1Y0Z1();
+		if (x1y0z1.contains(b->position_)) {
 			if (this->x1y0z1 == nullptr) {
 				this->x1y0z1 = new BHTree(x1y0z1);
-			}
-			else {
-				delete x1y0z1;
+				this->x1y0z1->level = level + 1;
 			}
 			this->x1y0z1->insert(b);
 			return;
 		}
 
-		Quad* x1y1z0 = this->quad->X1Y1Z0();
-		if (BodyUtility::inQuad(b, x1y1z0)) {
+		Quad x1y1z0 = quad.X1Y1Z0();
+		if (x1y1z0.contains(b->position_)) {
 			if (this->x1y1z0 == nullptr) {
 				this->x1y1z0 = new BHTree(x1y1z0);
-			}
-			else {
-				delete x1y1z0;
+				this->x1y1z0->level = level + 1;
 			}
 			this->x1y1z0->insert(b);
 			return;
 		}
 
-		Quad* x1y1z1 = this->quad->X1Y1Z1();
-		if (BodyUtility::inQuad(b, x1y1z1)) {
+		Quad x1y1z1 = quad.X1Y1Z1();
+		if (x1y1z1.contains(b->position_)) {
 			if (this->x1y1z1 == nullptr) {
 				this->x1y1z1 = new BHTree(x1y1z1);
-			}
-			else {
-				delete x1y1z1;
+				this->x1y1z1->level = level + 1;
 			}
 			this->x1y1z1->insert(b);
 			return;
@@ -140,105 +124,97 @@ void BHTree::insert(Body* b) {
 	//where the bodies should go, update the node, and end 
 	//(do not do anything recursively)
 	else {
-		Body* c = this->body;
-		Quad* x0y0z0 = this->quad->X0Y0Z0();
-		if (BodyUtility::inQuad(c, x0y0z0)) {
+		if (Body::samePosition(body, b) || level == 50) {
+			b->Add(body);
+			delete body;
+			body = b;
+			return;
+		}
+		Body* c = body->copy();
+		body->Add(b);
+		
+		Quad x0y0z0 = quad.X0Y0Z0();
+		if (x0y0z0.contains(c->position_)) {
 			if (this->x0y0z0 == nullptr) {
 				this->x0y0z0 = new BHTree(x0y0z0);
-			}
-			else {
-				delete x0y0z0;
+				this->x0y0z0->level = level + 1;
 			}
 			this->x0y0z0->insert(c);
 			this->insert(b);
 			return;
 		}
 
-		Quad* x0y0z1 = this->quad->X0Y0Z1();
-		if (BodyUtility::inQuad(c, x0y0z1)) {
+		Quad x0y0z1 = quad.X0Y0Z1();
+		if (x0y0z1.contains(c->position_)) {
 			if (this->x0y0z1 == nullptr) {
 				this->x0y0z1 = new BHTree(x0y0z1);
-			}
-			else {
-				delete x0y0z1;
+				this->x0y0z1->level = level + 1;
 			}
 			this->x0y0z1->insert(c);
 			this->insert(b);
 			return;
 		}
 
-		Quad* x0y1z0 = this->quad->X0Y1Z0();
-		if (BodyUtility::inQuad(c, x0y1z0)) {
+		Quad x0y1z0 = quad.X0Y1Z0();
+		if (x0y1z0.contains(c->position_)) {
 			if (this->x0y1z0 == nullptr) {
 				this->x0y1z0 = new BHTree(x0y1z0);
-			}
-			else {
-				delete x0y1z0;
+				this->x0y1z0->level = level + 1;
 			}
 			this->x0y1z0->insert(c);
 			this->insert(b);
 			return;
 		}
 
-		Quad* x0y1z1 = this->quad->X0Y1Z1();
-		if (BodyUtility::inQuad(c, x0y1z1)) {
+		Quad x0y1z1 = quad.X0Y1Z1();
+		if (x0y1z1.contains(c->position_)) {
 			if (this->x0y1z1 == nullptr) {
 				this->x0y1z1 = new BHTree(x0y1z1);
-			}
-			else {
-				delete x0y1z1;
+				this->x0y1z1->level = level + 1;
 			}
 			this->x0y1z1->insert(c);
 			this->insert(b);
 			return;
 		}
 
-		Quad* x1y0z0 = this->quad->X1Y0Z0();
-		if (BodyUtility::inQuad(c, x1y0z0)) {
+		Quad x1y0z0 = quad.X1Y0Z0();
+		if (x1y0z0.contains(c->position_)) {
 			if (this->x1y0z0 == nullptr) {
 				this->x1y0z0 = new BHTree(x1y0z0);
-			}
-			else {
-				delete x1y0z0;
+				this->x1y0z0->level = level + 1;
 			}
 			this->x1y0z0->insert(c);
 			this->insert(b);
 			return;
 		}
 
-		Quad* x1y0z1 = this->quad->X1Y0Z1();
-		if (BodyUtility::inQuad(c, x1y0z1)) {
+		Quad x1y0z1 = quad.X1Y0Z1();
+		if (x1y0z1.contains(c->position_)) {
 			if (this->x1y0z1 == nullptr) {
 				this->x1y0z1 = new BHTree(x1y0z1);
-			}
-			else {
-				delete x1y0z1;
+				this->x1y0z1->level = level + 1;
 			}
 			this->x1y0z1->insert(c);
 			this->insert(b);
 			return;
 		}
 
-		Quad* x1y1z0 = this->quad->X1Y1Z0();
-		if (BodyUtility::inQuad(c, x1y1z0)) {
+		Quad x1y1z0 = quad.X1Y1Z0();
+		if (x1y1z0.contains(c->position_)) {
 			if (this->x1y1z0 == nullptr) {
 				this->x1y1z0 = new BHTree(x1y1z0);
-			}
-			else {
-				delete x1y1z0;
+				this->x1y1z0->level = level + 1;
 			}
 			this->x1y1z0->insert(c);
 			this->insert(b);
 			return;
 		}
 
-		Quad* x1y1z1 = this->quad->X1Y1Z1();
-		if (BodyUtility::inQuad(c, x1y1z1)) {
+		Quad x1y1z1 = quad.X1Y1Z1();
+		if (x1y1z1.contains(c->position_)) {
 			if (this->x1y1z1 == nullptr) {
 				this->x1y1z1 = new BHTree(x1y1z1);
-			}
-			else {
-				delete x1y1z1;
+				this->x1y1z1->level = level + 1;
 			}
 			this->x1y1z1->insert(c);
 			this->insert(b);
@@ -252,11 +228,9 @@ void BHTree::insert(Body* b) {
 //far away that the external nodes would not matter much.
 void BHTree::updateForce(Body* b) {
 	if (this->isExternal()) {
-		if (this->body != b) {
-			b->AddForce(this->body);
-		}
+		b->AddForce(this->body);
 	}
-	else if (this->quad->getLength() / BodyUtility::Distance(this->body, b) < 2) {
+	else if (quad.getLength() / Body::distance(this->body, b) < 2) {
 		b->AddForce(this->body);
 	}
 	else {
@@ -272,20 +246,17 @@ void BHTree::updateForce(Body* b) {
 	}
 }
 
-void BHTree::clearTree() {
-	if (this->x0y0z0 != nullptr) this->x0y0z0->clearTree();
-	if (this->x0y0z1 != nullptr) this->x0y0z1->clearTree();
-	if (this->x0y1z0 != nullptr) this->x0y1z0->clearTree();
-	if (this->x0y1z1 != nullptr) this->x0y1z1->clearTree();
+BHTree::~BHTree() {
+	if (this->x0y0z0 != nullptr) delete this->x0y0z0;
+	if (this->x0y0z1 != nullptr) delete this->x0y0z1;
+	if (this->x0y1z0 != nullptr) delete this->x0y1z0;
+	if (this->x0y1z1 != nullptr) delete this->x0y1z1;
 
-	if (this->x1y0z0 != nullptr) this->x1y0z0->clearTree();
-	if (this->x1y0z1 != nullptr) this->x1y0z1->clearTree();
-	if (this->x1y1z0 != nullptr) this->x1y1z0->clearTree();
-	if (this->x1y1z1 != nullptr) this->x1y1z1->clearTree();
+	if (this->x1y0z0 != nullptr) delete this->x1y0z0;
+	if (this->x1y0z1 != nullptr) delete this->x1y0z1;
+	if (this->x1y1z0 != nullptr) delete this->x1y1z0;
+	if (this->x1y1z1 != nullptr) delete this->x1y1z1;
 
-	//if(this->body != nullptr)
-		//delete this->body;
-	if (this->quad != nullptr)
-		delete this->quad;
-	delete this;
+	if(this->body != nullptr)
+		delete this->body;
 }

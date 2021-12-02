@@ -5,7 +5,7 @@
 const double kG = 6.67E-11;
 
 /* Number of bodies to be run in the simulation */
-const int kBodyCount = 100;
+const int kBodyCount = 500;
 
 /* Mass constants - scaled for OpenFrameworks */
 const double kMassScale = 1E-15;
@@ -17,7 +17,7 @@ const double kTimeScale = 1E-10;
 const double kSecondsInYear = 3.154E7;
 
 /* Random velocity range for bodies */
-const int kMetersInKiloMeters = 1000;
+const int kMetersInKiloMeters = 100;
 const double kMinVelocity = -0.5 * kMetersInKiloMeters;
 const double kMaxVelocity = 0.5 * kMetersInKiloMeters;
 

@@ -30,7 +30,7 @@ void ofApp::ResetSimulation() {
 
 void ofApp::setup() {
   ofBackground(0, 0, 0);
-  GenerateStaticBodies();
+  GenerateKineticBodies();
   time_passed_ = 0;
 
   ofDisableArbTex();
@@ -40,20 +40,35 @@ void ofApp::setup() {
 }
 
 void ofApp::update() {
-  Quad* q = new Quad(0, 0, 0, 2 * 1e9);
+  
+  Quad q = Quad(0, 0, 0, 2 * 1e9);
   BHTree* bhtree = new BHTree(q);
   for (int i = 0; i < bodies.size(); ++i) {
-      if (q->contains(bodies[i].position_))
-          bhtree->insert(&bodies[i]);
+      if (q.contains(bodies[i].position_))
+          bhtree->insert(bodies[i].copy());
   }
 
   for (int i = 0; i < bodies.size(); ++i) {
       bodies[i].ResetForce();
-      if (q->contains(bodies[i].position_))
+      if (q.contains(bodies[i].position_))
           bhtree->updateForce(&bodies[i]);
   }
 
-  bhtree->clearTree();
+  delete bhtree;
+  /*
+
+    for (int i = 0; i < bodies.size(); ++i) {
+        bodies[i].ResetForce();
+    }
+
+    for (int i = 0; i < bodies.size(); ++i) {
+        for (int j = 0; j < bodies.size(); ++j) {
+            if (i != j) {
+                bodies[i].AddForce(&bodies[j]);
+            }
+        }
+    }
+    */
   for (int i = 0; i < bodies.size(); ++i) {
     bodies[i].UpdatePosition(time_step_);
   }

@@ -1,6 +1,5 @@
 #pragma once
 
-#include "body_utility.h"
 #include "BHTree.h"
 #include "Quad.h"
 #include "ofMain.h"

@@ -3,30 +3,10 @@
 
 #include "constants.h"
 #include "ofMain.h"
+#include "Quad.h"
 
 #include <math.h>
 #include <stdio.h>
-
-/*
-  Struct to hold a 3 dimensional vector with components x y z.
-*/
-struct Vector {
-  double x;
-  double y;
-  double z;
-
-  Vector() {
-    x = 0.0;
-    y = 0.0;
-    z = 0.0;
-  }
-
-  Vector(double x, double y, double z) {
-    this->x = x;
-    this->y = y;
-    this->z = z;
-  }
-};
 
 /*
   Class for a body in the simulation that tracks the position, velocity, mass,
@@ -66,6 +46,32 @@ class Body {
   void AddForce(Body *b);
 
   Body* copy();
+
+  static double distance(Body *a, Body *b) {
+      return (
+          sqrt(
+              (a->position_.x - b->position_.x) * (a->position_.x - b->position_.x) +
+              (a->position_.y - b->position_.y) * (a->position_.y - b->position_.y) +
+              (a->position_.z - b->position_.z) * (a->position_.z - b->position_.z)
+          ));
+  }
+  void Add(Body* b) {
+      position_ = (position_ * mass_ + b->position_ * b->mass_) / (mass_ + b->mass_);
+      velocity_ = (velocity_ * mass_ + b->velocity_ * b->mass_) / (mass_ + b->mass_);
+      mass_ += b->mass_;
+      radius_ += b->radius_;
+  }
+  static Body* mergeBody(Body* a, Body* b) {
+      return new Body(
+          (a->position_ * a->mass_ + b->position_ * b->mass_) / (a->mass_ + b->mass_),
+          (a->velocity_ * a->mass_ + b->velocity_ * b->mass_) / (a->mass_ + b->mass_),
+          a->mass_ + b->mass_,
+          a->radius_ + b->radius_);
+  }
+
+  static bool samePosition(Body *a, Body *b) {
+      return distance(a, b) < 20;
+  }
 };
 
 #endif /* body_h */

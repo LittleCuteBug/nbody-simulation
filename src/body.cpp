@@ -1,6 +1,4 @@
 #include "body.h"
-#include "body_utility.h"
-
 void Body::Draw() const {
 	ofEnableAlphaBlending();
 	ofSetColor(244, 107, 66);
@@ -8,9 +6,9 @@ void Body::Draw() const {
 }
 
 void Body::UpdatePosition(double time_step) {
-	velocity_.x += force_.x / mass_;
-	velocity_.y += force_.y / mass_;
-	velocity_.z += force_.z / mass_;
+	velocity_.x += force_.x * time_step;
+	velocity_.y += force_.y * time_step;
+	velocity_.z += force_.z * time_step;
 
 	position_.x += (velocity_.x * time_step);
 	position_.y += (velocity_.y * time_step);
@@ -23,16 +21,19 @@ void Body::ResetForce() {
 	force_.z = 0;
 }
 
-void Body::AddForce(Body* b) {
+void Body::AddForce(Body* body) {
 
-	double dist = BodyUtility::Distance(this, b);
-	double EPS = 3E4;
-	double g = (b->mass_ * kG / (dist * dist * dist + EPS * EPS * EPS));
-	double F = (g * this->mass_ * b->mass_) / (dist * dist * dist + EPS * EPS * EPS);
+	double dx = body->position_.x - position_.x;
+	double dy = body->position_.y - position_.y;
+	double dz = body->position_.z - position_.z;
+	double EPS = 1E3;
+	double dist = max(EPS, sqrt(dx * dx + dy * dy + dz * dz));
 
-	this->force_.x += F * (b->position_.x - this->position_.x) / dist;
-	this->force_.y += F * (b->position_.y - this->position_.y) / dist;
-	this->force_.z += F * (b->position_.z - this->position_.z) / dist;
+	double f = body->mass_ * kG / (dist * dist * dist);
+
+	force_.x += f * dx;
+	force_.y += f * dy;
+	force_.z += f * dz;
 }
 
 Body* Body::copy() {
