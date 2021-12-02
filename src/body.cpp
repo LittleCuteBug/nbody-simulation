@@ -10,10 +10,10 @@ void Body::addForce(Body body) {
 	double dx = body.position_.x - position_.x;
 	double dy = body.position_.y - position_.y;
 	double dz = body.position_.z - position_.z;
-	double EPS = 3E4;
-	double dist = sqrt(dx * dx + dy * dy + dz * dz);
+	double EPS = 1E3;
+	double dist = max(EPS, sqrt(dx * dx + dy * dy + dz * dz));
 
-	double f = body.mass_ * kG / (dist * dist * dist + EPS*EPS*EPS);
+	double f = body.mass_ * kG / (dist * dist * dist);
 
 	force_.x += f * dx;
 	force_.y += f * dy;
